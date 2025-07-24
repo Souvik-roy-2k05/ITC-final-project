@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Profile - ITC PSPD Portal</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      background: linear-gradient(to right, #a1ffce, #faffd1);
+      font-family: Arial, sans-serif;
+      padding: 50px;
+      text-align: center;
+    }
+
+    .profile-box {
+      background-color: white;
+      padding: 30px;
+      border-radius: 15px;
+      display: inline-block;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
+      max-width: 600px;
+      text-align: left;
+    }
+
+    h1 {
+      color: #027d1d;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .profile-section {
+      margin-bottom: 25px;
+    }
+
+    .profile-section h2 {
+      color: #027d1d;
+      font-size: 20px;
+      margin-bottom: 10px;
+      border-bottom: 2px solid #e1f4e1;
+      padding-bottom: 5px;
+    }
+
+    .profile-info {
+      display: flex;
+      margin: 10px 0;
+    }
+
+    .profile-label {
+      font-weight: bold;
+      width: 150px;
+    }
+
+    .profile-value {
+      flex: 1;
+    }
+
+    .button-group {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .profile-btn {
+      margin: 0 10px;
+      padding: 10px 20px;
+      background-color: #027d1d;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .profile-btn:hover {
+      background-color: #015f15;
+    }
+
+    .edit-btn {
+      background-color: #0056b3;
+    }
+
+    .edit-btn:hover {
+      background-color: #003d7e;
+    }
+
+    .logout-btn {
+        background-color: #dc3545; /* Red color for logout */
+    }
+
+    .logout-btn:hover {
+        background-color: #c82333;
+    }
+  </style>
+</head>
+<body>
+  <div class="profile-box">
+    <h1>User Profile</h1>
+    
+    <div class="profile-section">
+      <h2>Personal Information</h2>
+      <div class="profile-info">
+        <div class="profile-label">Name:</div>
+        <div class="profile-value" id="profile-name">Loading...</div>
+      </div>
+      <div class="profile-info">
+        <div class="profile-label">Employee ID:</div>
+        <div class="profile-value" id="profile-employee-id">Loading...</div>
+      </div>
+      <div class="profile-info">
+        <div class="profile-label">Email:</div>
+        <div class="profile-value" id="profile-email">Loading...</div>
+      </div>
+      <div class="profile-info">
+        <div class="profile-label">Department:</div>
+        <div class="profile-value">Information Technology</div> 
+      </div>
+    </div>
+    
+    <div class="profile-section">
+      <h2>Contact Information</h2>
+      <div class="profile-info">
+        <div class="profile-label">Phone:</div>
+        <div class="profile-value">+91 9876543210</div>
+      </div>
+      <!-- <div class="profile-info">
+        <div class="profile-label">Extension:</div>
+        <div class="profile-value">4567</div>
+      </div> -->
+      <div class="profile-info">
+        <div class="profile-label">Location:</div>
+        <div class="profile-value">Kolkata</div>
+      </div>
+    </div>
+    
+    <div class="profile-section">
+      <h2>Account Information</h2>
+      <div class="profile-info">
+        <div class="profile-label">Last Login:</div>
+        <div class="profile-value">July 24, 2025 12:15 PM</div>
+      </div>
+      <div class="profile-info">
+        <div class="profile-label">Account Status:</div>
+        <div class="profile-value">Active</div>
+      </div>
+    </div>
+    
+    <div class="button-group">
+      <button class="profile-btn edit-btn" id="edit-profile-btn">Edit Profile</button>
+      <button class="profile-btn logout-btn" id="logout-btn">Log Out</button>
+      <button class="profile-btn" onclick="location.href='index.html'">Back to Home</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    // Redirect to edit profile page
+    document.getElementById('edit-profile-btn').addEventListener('click', () => {
+        window.location.href = '/edit-profile.html'; // Navigate to the new edit page
+    });
+
+    // Logout functionality
+    document.getElementById('logout-btn').addEventListener('click', async () => {
+        try {
+            const response = await fetch('/api/logout', { method: 'POST' });
+            if (response.ok) {
+                localStorage.removeItem('loggedInUserEmail'); // Clear stored user info
+                alert('You have been logged out.');
+                window.location.href = '/login.html'; // Redirect to login page
+            } else {
+                alert('Logout failed. Please try again.');
+            }
+        } catch (error) {
+            console.error('Error during logout:', error);
+            alert('An error occurred during logout. Please try again.');
+        }
+    });
+
+    // Fetch profile data based on logged-in user
+    document.addEventListener('DOMContentLoaded', async () => {
+        const profileName = document.getElementById('profile-name');
+        const profileEmployeeId = document.getElementById('profile-employee-id');
+        const profileEmail = document.getElementById('profile-email');
+
+        const loggedInUserEmail = localStorage.getItem('loggedInUserEmail');
+
+        if (!loggedInUserEmail) {
+            profileName.textContent = 'Not logged in.';
+            profileEmployeeId.textContent = 'N/A';
+            profileEmail.textContent = 'N/A';
+            alert('Please log in to view your profile.');
+            window.location.href = '/login.html'; // Redirect if not logged in
+            return;
+        }
+
+        try {
+            // Fetch specific user's profile using the email from localStorage
+            const response = await fetch(`/api/profile/${loggedInUserEmail}`); 
+            
+            if (response.ok) {
+                const userData = await response.json();
+                if (userData) {
+                    profileName.textContent = userData.fullName || 'N/A';
+                    profileEmployeeId.textContent = userData.employeeId || 'N/A';
+                    profileEmail.textContent = userData.email || 'N/A';
+                } else {
+                    profileName.textContent = 'User not found';
+                    profileEmployeeId.textContent = 'N/A';
+                    profileEmail.textContent = 'N/A';
+                }
+            } else {
+                console.error('Failed to fetch profile data:', response.statusText);
+                profileName.textContent = 'Error loading data';
+                profileEmployeeId.textContent = 'Error loading data';
+                profileEmail.textContent = 'Error loading data';
+                if (response.status === 404) {
+                    alert('Profile data not found for this user. Please register or contact support.');
+                    localStorage.removeItem('loggedInUserEmail'); // Clear invalid login info
+                    window.location.href = '/login.html';
+                }
+            }
+        } catch (error) {
+            console.error('Network error or unexpected issue:', error);
+            profileName.textContent = 'Network error';
+            profileEmployeeId.textContent = 'Network error';
+            profileEmail.textContent = 'Network error';
+            alert('Could not connect to the server. Please try again later.');
+        }
+    });
+  </script>
+</body>
+</html>

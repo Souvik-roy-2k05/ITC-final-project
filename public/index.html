@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ITC-PSPD Portal</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="a"><h1 id="heading">ITC-PSPD Portal</h1></div>
+    <hr />
+
+    <!-- Navigation Bar -->
+    <header>
+      <nav id="nav-container">
+        <button class="nav-btn" onclick="location.href='index.html'">
+          Home
+        </button>
+        <button class="nav-btn" onclick="location.href='contact.html'">
+          Contacts
+        </button>
+
+        <button class="nav-btn" onclick="location.href='register.html'">
+          Register
+        </button>
+        <button class="nav-btn" onclick="location.href='login.html'">
+          Log in
+        </button>
+        <button class="nav-btn" onclick="location.href='profile.html'">
+          Profile
+        </button>
+      </nav>
+    </header>
+
+    <!-- Top Menu Bar -->
+    <div class="top-menu">
+      <button class="menu-tab">Favorites</button>
+      <button class="menu-tab">Business Excellence</button>
+      <button class="menu-tab">Compliance / Quality</button>
+      <button class="menu-tab">Corporate</button>
+      <button class="menu-tab">Digital (IT / ICoE)</button>
+      <button class="menu-tab">EHS</button>
+      <button class="menu-tab">Finance</button>
+      <button class="menu-tab">General</button>
+      <button class="menu-tab">HR / Admin</button>
+      <button class="menu-tab">L&D</button>
+    </div>
+
+    <!-- Main Grid Layout -->
+    <main class="content">
+      <section class="grid">
+        <div class="card">Annexure User Registration</div>
+        <div class="card">Audit Repository</div>
+        <div class="card">DigiDocs</div>
+        <div class="card">Emp Undertaking Form</div>
+        <div class="card">Folder Access Forms</div>
+        <div class="card">IM Policy Manual</div>
+        <div class="card">IM Policy User Confirmation</div>
+        <div class="card">IMS</div>
+        <div class="card">SAP DB</div>
+      </section>
+
+      <!-- Right Sidebar -->
+      <aside class="sidebar">
+        <div class="updates">
+          <h3>HR Updates</h3>
+          <button class="view-more">View More</button>
+        </div>
+        <div class="calendar">
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+            "
+          >
+            <span id="prev-month" class="month-nav">&lt;</span>
+            <p class="month-year"><strong></strong></p>
+            <span id="next-month" class="month-nav">&gt;</span>
+          </div>
+
+          <button id="today-btn" class="view-more" style="margin-top: 10px">
+            Today
+          </button>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Sun</th>
+                <th>Mon</th>
+                <th>Tue</th>
+                <th>Wed</th>
+                <th>Thu</th>
+                <th>Fri</th>
+                <th>Sat</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </aside>
+    </main>
+    <!-- Coming Soon Page Overlay -->
+    <div id="coming-soon-overlay">
+      <div class="coming-soon-box">
+        <h1>Coming Soon</h1>
+        <p>This feature is under development. Stay tuned!</p>
+        <button id="close-overlay">Close</button>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
